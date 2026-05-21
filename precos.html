@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabela de Preços — Bruna Pagy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F4EF;--white:#FFFFFF;--ink:#1C1B18;--ink-muted:#7A756E;
+    --amber:#C07D2A;--amber-light:#E8C98A;--amber-faint:#F5EDD8;
+    --border:#E0D9CE;--radius:2px;--green:#2A7A4B;--green-faint:#EAF5EF;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:16px;scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7}
+
+  /* COVER */
+  .cover{background:var(--ink);color:var(--white);padding:80px 64px 72px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-120px;right:-80px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(192,125,42,.22) 0%,transparent 70%);pointer-events:none}
+  .cover-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:72px}
+  .brand-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.5rem;letter-spacing:.18em;text-transform:uppercase}
+  .brand-tagline{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber-light);margin-top:4px}
+  .doc-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--amber-light);border:1px solid rgba(232,201,138,.35);padding:6px 14px;border-radius:var(--radius)}
+  .cover-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(3rem,8vw,5.5rem);line-height:1.05}
+  .cover-title em{font-style:italic;color:var(--amber-light)}
+  .cover-sub{margin-top:28px;font-size:.9rem;color:rgba(255,255,255,.55);max-width:560px;line-height:1.8}
+  .cover-line{margin-top:56px;padding-top:28px;border-top:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:32px;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+  .cover-line span{color:var(--amber-light)}
+
+  /* NOTE */
+  .note{background:var(--amber-faint);border-left:3px solid var(--amber);margin:48px 48px 0;padding:24px 32px;border-radius:0 var(--radius) var(--radius) 0;font-size:.85rem;color:#5C4E30;line-height:1.8}
+  .note strong{font-weight:500;color:#3D3218}
+
+  /* MAIN */
+  main{padding:48px 48px 160px;max-width:1080px;margin:0 auto}
+
+  /* SECTION LABEL */
+  .sec-label{display:flex;align-items:center;gap:16px;margin-bottom:28px;margin-top:8px}
+  .sec-label-line{flex:1;height:1px;background:var(--border)}
+  .sec-label-text{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;letter-spacing:.06em;white-space:nowrap}
+  .sec-label-num{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;color:var(--amber);letter-spacing:.12em}
+
+  /* TABLE */
+  .table-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:56px}
+  table{width:100%;border-collapse:collapse}
+  thead tr{background:var(--ink)}
+  thead th{padding:16px 20px;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:rgba(255,255,255,.7);text-align:left}
+  thead th:last-child{text-align:right}
+  thead th:first-child{width:40px;text-align:center}
+  tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+  tbody tr:last-child{border-bottom:none}
+  tbody tr.item-row:hover{background:#FDFAF5;cursor:pointer}
+  tbody tr.item-row.selected{background:var(--amber-faint)}
+  tbody td{padding:14px 20px;font-size:.86rem;vertical-align:middle}
+  tbody td:last-child{text-align:right;font-weight:500;color:var(--amber);white-space:nowrap}
+  tbody td:first-child{text-align:center;width:40px}
+  .td-name{font-weight:400;color:var(--ink)}
+  .td-desc{font-size:.76rem;color:var(--ink-muted);margin-top:2px}
+  .td-rev{display:inline-block;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;background:var(--amber-faint);color:var(--amber);border:1px solid var(--amber-light);padding:2px 7px;border-radius:10px;margin-top:3px}
+  .td-cat{background:#FDFBF8;padding:10px 20px}
+  .td-cat span{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:600;letter-spacing:.08em;color:var(--amber)}
+
+  /* CUSTOM CHECKBOX */
+  .cb-wrap{display:flex;align-items:center;justify-content:center}
+  .cb-wrap input[type="checkbox"]{position:absolute;opacity:0;pointer-events:none;width:0;height:0}
+  .cb-box{width:18px;height:18px;border:1.5px solid var(--border);border-radius:2px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;background:var(--white)}
+  tbody tr.item-row:hover .cb-box{border-color:var(--amber-light)}
+  tbody tr.item-row.selected .cb-box{background:var(--amber);border-color:var(--amber)}
+  tbody tr.item-row.selected .cb-box::after{content:'';width:9px;height:5px;border-left:2px solid white;border-bottom:2px solid white;transform:rotate(-45deg) translateY(-1px);display:block}
+
+  /* PACKAGES */
+  .packages{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:56px}
+  .pkg{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+  .pkg:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.07)}
+  .pkg.featured{border-color:var(--amber);position:relative}
+  .pkg.featured::before{content:'Mais escolhido';position:absolute;top:0;right:0;background:var(--amber);color:var(--white);font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;padding:5px 12px;font-weight:500}
+  .pkg-header{padding:28px 28px 20px;border-bottom:1px solid var(--border)}
+  .pkg-tier{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+  .pkg-name{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;line-height:1.1;margin-bottom:12px}
+  .pkg-price{display:flex;align-items:baseline;gap:4px;margin-bottom:8px}
+  .pkg-currency{font-size:.9rem;color:var(--ink-muted);margin-top:4px}
+  .pkg-amount{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--ink);line-height:1}
+  .pkg-note{font-size:.75rem;color:var(--ink-muted);line-height:1.5}
+  .pkg-economy{font-size:.73rem;color:var(--green);font-weight:500;margin-top:6px}
+  .pkg-body{padding:22px 28px;flex:1}
+  .pkg-body ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .pkg-body li{display:flex;align-items:flex-start;gap:9px;font-size:.81rem;color:var(--ink);line-height:1.4}
+  .pkg-body li::before{content:'';width:12px;height:7px;border-left:2px solid var(--amber);border-bottom:2px solid var(--amber);transform:rotate(-45deg) translateY(-1px);flex-shrink:0;margin-top:5px}
+  .pkg-body .divider-item{height:1px;background:var(--border);margin:6px 0}
+  .pkg-body .rev-tag{font-size:.7rem;color:var(--amber);font-style:italic}
+  .pkg-footer{padding:18px 28px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+  .pkg-cta{display:block;text-align:center;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:13px;border:1.5px solid var(--border);border-radius:var(--radius);text-decoration:none;cursor:pointer;transition:all .2s}
+  .pkg-cta:hover{background:var(--ink);color:var(--white);border-color:var(--ink)}
+  .pkg-cta.primary{background:var(--amber);color:var(--white);border-color:var(--amber)}
+  .pkg-cta.primary:hover{background:#A06520}
+  .pkg-cta-wa{display:block;text-align:center;font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:13px;border-radius:var(--radius);text-decoration:none;cursor:pointer;transition:all .2s;background:#25D366;color:white;border:none}
+  .pkg-cta-wa:hover{background:#1da851}
+
+  /* ADJUSTMENTS */
+  .adj-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:56px}
+  .adj-item{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  .adj-label{font-size:.84rem;font-weight:400}
+  .adj-desc{font-size:.74rem;color:var(--ink-muted);margin-top:2px}
+  .adj-price{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--amber);white-space:nowrap}
+
+  /* TERMS */
+  .terms{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:32px}
+  .terms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 32px}
+  .term-title{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:8px;font-weight:500}
+  .term-text{font-size:.81rem;color:var(--ink-muted);line-height:1.7}
+
+  /* STICKY CART */
+  #cart{
+    position:fixed;bottom:0;left:0;right:0;
+    background:var(--ink);
+    padding:0 48px;
+    transform:translateY(100%);
+    transition:transform .35s cubic-bezier(.4,0,.2,1);
+    z-index:100;
+    border-top:2px solid var(--amber);
+  }
+  #cart.visible{transform:translateY(0)}
+  .cart-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 0;flex-wrap:wrap}
+  .cart-left{display:flex;flex-direction:column;gap:2px}
+  .cart-count{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+  .cart-items-preview{font-size:.8rem;color:rgba(255,255,255,.65);max-width:420px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .cart-right{display:flex;align-items:center;gap:16px;flex-shrink:0}
+  .cart-total-label{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);text-align:right}
+  .cart-total-value{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--amber-light);line-height:1;text-align:right}
+  .cart-actions{display:flex;gap:10px}
+  .btn-wa{background:#25D366;color:white;border:none;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:14px 24px;border-radius:var(--radius);cursor:pointer;transition:background .2s;white-space:nowrap}
+  .btn-wa:hover{background:#1da851}
+  .btn-clear{background:transparent;color:rgba(255,255,255,.3);border:none;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;padding:8px;transition:color .2s}
+  .btn-clear:hover{color:rgba(255,255,255,.7)}
+
+
+  /* FOOTER */
+  footer{background:var(--ink);color:rgba(255,255,255,.4);padding:36px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase}
+  .footer-brand{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;letter-spacing:.2em;color:var(--white)}
+  footer a{color:var(--amber-light);text-decoration:none}
+  footer a:hover{color:var(--white)}
+
+  @media(max-width:900px){.packages{grid-template-columns:1fr}.adj-grid{grid-template-columns:1fr}.terms-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:640px){
+    .cover{padding:40px 24px}.cover-top{flex-direction:column;gap:20px}
+    .note,footer{padding-left:20px;padding-right:20px}
+    .note{margin-left:20px;margin-right:20px}
+    main{padding:32px 20px 160px}
+    .terms-grid{grid-template-columns:1fr}
+    #cart{padding:0 20px}
+    .cart-inner{flex-direction:column;align-items:flex-start;gap:12px}
+    .cart-actions{width:100%}.btn-wa,.btn-email{flex:1;text-align:center}
+    thead th:nth-child(3),tbody td:nth-child(3){display:none}
+  }
+  @media print{
+    #cart{display:none!important}
+    body{background:white}.cover{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .pkg-footer{display:none}main{padding-bottom:40px}
+  }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="cover-top">
+    <div>
+      <div class="brand-name">Bruna Pagy</div>
+      <div class="brand-tagline">Design &amp; Identidade Visual</div>
+    </div>
+    <div class="doc-label">Tabela de Preços</div>
+  </div>
+  <h1 class="cover-title">Serviços &amp;<br><em>Investimentos</em></h1>
+  <p class="cover-sub">Valores praticados para projetos de identidade visual, comunicação e design estratégico. Todos os projetos incluem briefing estratégico e acompanhamento personalizado.</p>
+  <div class="cover-line"><span>Válido a partir de 2026</span> &nbsp;·&nbsp; Brasília, DF &nbsp;·&nbsp; <span id="doc-date"></span></div>
+</header>
+
+<div class="note">
+  <strong>Como montar seu orçamento:</strong> selecione os itens individuais que deseja na tabela abaixo. O total é calculado automaticamente. Ao finalizar, clique em "Falar no WhatsApp" ou "Enviar por e-mail" — a lista completa com os valores já vai preenchida.
+</div>
+
+<main>
+
+  <!-- ITENS INDIVIDUAIS -->
+  <div class="sec-label">
+    <div class="sec-label-num">01</div>
+    <div class="sec-label-text">Monte seu orçamento</div>
+    <div class="sec-label-line"></div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Item</th>
+          <th>O que está incluso</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody id="items-tbody">
+
+        <tr><td colspan="4" class="td-cat"><span>Identidade de Marca</span></td></tr>
+
+        <tr class="item-row" data-name="Logotipo Principal" data-price="480">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Logotipo Principal</div><div class="td-desc">Base de toda a identidade visual</div><span class="td-rev">2 rodadas de ajuste</span></td>
+          <td><div class="td-desc">3 propostas conceituais · versão colorida, monocromática e negativa · AI, PDF, PNG e SVG</div></td>
+          <td>R$ 480</td>
+        </tr>
+        <tr class="item-row" data-name="Variações do Logo" data-price="180">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Variações do Logo</div><div class="td-desc">Horizontal, vertical, ícone/favicon</div><span class="td-rev">1 rodada de ajuste</span></td>
+          <td><div class="td-desc">Todos os arquivos finais nas versões solicitadas</div></td>
+          <td>R$ 180</td>
+        </tr>
+
+        <tr><td colspan="4" class="td-cat"><span>Papelaria</span></td></tr>
+
+        <tr class="item-row" data-name="Cartão de Visita" data-price="150">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Cartão de Visita</div><div class="td-desc">Frente e verso · pronto para gráfica</div><span class="td-rev">2 rodadas de ajuste</span></td>
+          <td><div class="td-desc">Alta resolução em CMYK · duas propostas de layout</div></td>
+          <td>R$ 150</td>
+        </tr>
+        <tr class="item-row" data-name="Papel Timbrado" data-price="130">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Papel Timbrado</div><div class="td-desc">Formato A4 · digital e impressão</div><span class="td-rev">1 rodada de ajuste</span></td>
+          <td><div class="td-desc">Arquivo Word editável + PDF fechado</div></td>
+          <td>R$ 130</td>
+        </tr>
+        <tr class="item-row" data-name="Assinatura de E-mail" data-price="140">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Assinatura de E-mail</div><div class="td-desc">Compatível com Gmail, Outlook e afins</div><span class="td-rev">1 rodada de ajuste</span></td>
+          <td><div class="td-desc">HTML para colar + instruções · com e sem foto</div></td>
+          <td>R$ 140</td>
+        </tr>
+        <tr class="item-row" data-name="Proposta Comercial" data-price="220">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Proposta Comercial</div><div class="td-desc">Template timbrado para clientes</div><span class="td-rev">1 rodada de ajuste</span></td>
+          <td><div class="td-desc">Editável em Word/Google Docs com identidade visual aplicada</div></td>
+          <td>R$ 220</td>
+        </tr>
+
+        <tr><td colspan="4" class="td-cat"><span>Redes Sociais</span></td></tr>
+
+        <tr class="item-row" data-name="Foto de Perfil (redes)" data-price="90">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Foto de Perfil</div><div class="td-desc">Instagram, LinkedIn, WhatsApp Business</div><span class="td-rev">1 rodada de ajuste</span></td>
+          <td><div class="td-desc">Com logo ou avatar · otimizado por plataforma</div></td>
+          <td>R$ 90</td>
+        </tr>
+        <tr class="item-row" data-name="Destaques Instagram (pack 10)" data-price="180">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Destaques Instagram</div><div class="td-desc">Pack com até 10 capas de destaque</div><span class="td-rev">1 rodada de ajuste</span></td>
+          <td><div class="td-desc">Ícones e capas personalizados · PNG em alta resolução</div></td>
+          <td>R$ 180</td>
+        </tr>
+        <tr class="item-row" data-name="Capa para Redes Sociais" data-price="150">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Capa para Redes Sociais</div><div class="td-desc">Facebook, YouTube, LinkedIn (até 2)</div><span class="td-rev">1 rodada de ajuste</span></td>
+          <td><div class="td-desc">Dimensões corretas por plataforma</div></td>
+          <td>R$ 150</td>
+        </tr>
+        <tr class="item-row" data-name="Templates de Post (6 layouts)" data-price="320">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Templates de Post</div><div class="td-desc">Pack com 6 layouts para feed</div><span class="td-rev">2 rodadas de ajuste</span></td>
+          <td><div class="td-desc">Editáveis em Canva · guia de uso incluso</div></td>
+          <td>R$ 320</td>
+        </tr>
+        <tr class="item-row" data-name="Templates de Stories (6 layouts)" data-price="280">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Templates de Stories</div><div class="td-desc">Pack com 6 layouts para stories</div><span class="td-rev">2 rodadas de ajuste</span></td>
+          <td><div class="td-desc">Editáveis em Canva · compatíveis com Reels</div></td>
+          <td>R$ 280</td>
+        </tr>
+        <tr class="item-row" data-name="Artes para WhatsApp (pack 4)" data-price="160">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Artes para WhatsApp</div><div class="td-desc">Pack com 4 artes institucionais</div><span class="td-rev">1 rodada de ajuste</span></td>
+          <td><div class="td-desc">Boas-vindas, serviços, promoção e agradecimento</div></td>
+          <td>R$ 160</td>
+        </tr>
+
+        <tr><td colspan="4" class="td-cat"><span>Materiais Digitais</span></td></tr>
+
+        <tr class="item-row" data-name="Slides / Apresentação (até 15)" data-price="380">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Slides / Apresentação</div><div class="td-desc">Template completo · até 15 slides</div><span class="td-rev">2 rodadas de ajuste</span></td>
+          <td><div class="td-desc">PowerPoint ou Canva · capa, conteúdo e encerramento</div></td>
+          <td>R$ 380</td>
+        </tr>
+        <tr class="item-row" data-name="Diagramação de Livro / Livreto" data-price="60">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Diagramação de Livro / Livreto</div><div class="td-desc">Por página diagramada</div><span class="td-rev">1 rodada de ajuste</span></td>
+          <td><div class="td-desc">Livros, livretos, apostilas e e-books · PDF para impressão e digital</div></td>
+          <td>R$ 60/pág.</td>
+        </tr>
+        <tr class="item-row" data-name="Catálogo Digital (por página)" data-price="60">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Catálogo Digital</div><div class="td-desc">Por página diagramada</div><span class="td-rev">1 rodada de ajuste</span></td>
+          <td><div class="td-desc">PDF para WhatsApp e e-mail · identidade visual aplicada</div></td>
+          <td>R$ 60/pág.</td>
+        </tr>
+        <tr class="item-row" data-name="Manual de Identidade Visual" data-price="520">
+          <td><label class="cb-wrap"><input type="checkbox"><span class="cb-box"></span></label></td>
+          <td><div class="td-name">Manual de Identidade Visual</div><div class="td-desc">Guia completo de uso da marca</div><span class="td-rev">2 rodadas de ajuste</span></td>
+          <td><div class="td-desc">Logo, cores, tipografia, aplicações e exemplos de uso · PDF</div></td>
+          <td>R$ 520</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PACOTES -->
+  <div class="sec-label">
+    <div class="sec-label-num">02</div>
+    <div class="sec-label-text">Ou escolha um pacote</div>
+    <div class="sec-label-line"></div>
+  </div>
+
+  <div class="packages">
+
+    <div class="pkg">
+      <div class="pkg-header">
+        <div class="pkg-tier">Pacote 01</div>
+        <div class="pkg-name">Essencial</div>
+        <div class="pkg-price"><span class="pkg-currency">R$</span><span class="pkg-amount">890</span></div>
+        <div class="pkg-note">Para quem está começando e precisa de uma presença profissional sólida.</div>
+        <div class="pkg-economy">Economia de R$ 100 vs. itens separados</div>
+      </div>
+      <div class="pkg-body">
+        <ul>
+          <li>Logotipo principal (3 propostas)</li>
+          <li>Variações do logo (horizontal, vertical, ícone)</li>
+          <li>Foto de perfil para redes sociais</li>
+          <li>Cartão de visita (frente e verso)</li>
+          <li>Arquivos organizados para impressão e digital</li>
+          <div class="divider-item"></div>
+          <li><span class="rev-tag">2 rodadas de ajuste em todo o pacote</span></li>
+        </ul>
+      </div>
+      <div class="pkg-footer">
+        <a class="pkg-cta-wa" href="https://wa.me/5561992879263?text=Olá%20Bruna!%20Tenho%20interesse%20no%20Pacote%20Essencial%20(R%24%20890).%20Podemos%20conversar%3F" target="_blank">Quero este!</a>
+      </div>
+    </div>
+
+    <div class="pkg featured">
+      <div class="pkg-header">
+        <div class="pkg-tier">Pacote 02</div>
+        <div class="pkg-name">Profissional</div>
+        <div class="pkg-price"><span class="pkg-currency">R$</span><span class="pkg-amount">1.890</span></div>
+        <div class="pkg-note">Para marcas que querem consistência em todos os pontos de contato digital.</div>
+        <div class="pkg-economy">Economia de R$ 260 vs. itens separados</div>
+      </div>
+      <div class="pkg-body">
+        <ul>
+          <li>Tudo do Pacote Essencial</li>
+          <div class="divider-item"></div>
+          <li>Papel timbrado (Word editável + PDF)</li>
+          <li>Assinatura de e-mail (HTML)</li>
+          <li>Destaques Instagram (10 capas)</li>
+          <li>Templates de post para feed (6 layouts)</li>
+          <li>Templates de stories (6 layouts)</li>
+          <li>Capa para redes sociais (até 2 plataformas)</li>
+          <div class="divider-item"></div>
+          <li><span class="rev-tag">3 rodadas de ajuste em todo o pacote</span></li>
+        </ul>
+      </div>
+      <div class="pkg-footer">
+        <a class="pkg-cta-wa" href="https://wa.me/5561992879263?text=Olá%20Bruna!%20Tenho%20interesse%20no%20Pacote%20Profissional%20(R%24%201.890).%20Podemos%20conversar%3F" target="_blank">Quero este!</a>
+      </div>
+    </div>
+
+    <div class="pkg">
+      <div class="pkg-header">
+        <div class="pkg-tier">Pacote 03</div>
+        <div class="pkg-name">Completo</div>
+        <div class="pkg-price"><span class="pkg-currency">R$</span><span class="pkg-amount">2.990</span></div>
+        <div class="pkg-note">Identidade completa com todos os materiais para lançar a marca com força.</div>
+        <div class="pkg-economy">Economia de R$ 510 vs. itens separados</div>
+      </div>
+      <div class="pkg-body">
+        <ul>
+          <li>Tudo do Pacote Profissional</li>
+          <div class="divider-item"></div>
+          <li>Proposta comercial (template editável)</li>
+          <li>Artes para WhatsApp (pack com 4)</li>
+          <li>Slides / apresentação (até 15 slides)</li>
+          <li>Manual de identidade visual completo</li>
+          <div class="divider-item"></div>
+          <li><span class="rev-tag">Revisões ilimitadas até aprovação final</span></li>
+        </ul>
+      </div>
+      <div class="pkg-footer">
+        <a class="pkg-cta-wa" href="https://wa.me/5561992879263?text=Olá%20Bruna!%20Tenho%20interesse%20no%20Pacote%20Completo%20(R%24%202.990).%20Podemos%20conversar%3F" target="_blank">Quero este!</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AJUSTES -->
+  <div class="sec-label">
+    <div class="sec-label-num">03</div>
+    <div class="sec-label-text">Ajustes fora do escopo</div>
+    <div class="sec-label-line"></div>
+  </div>
+
+  <div class="adj-grid">
+    <div class="adj-item">
+      <div><div class="adj-label">Rodada adicional de ajuste</div><div class="adj-desc">Após o limite incluído no projeto ou pacote</div></div>
+      <div class="adj-price">R$ 80</div>
+    </div>
+    <div class="adj-item">
+      <div><div class="adj-label">Nova proposta conceitual</div><div class="adj-desc">Quando o cliente deseja mudar completamente a direção</div></div>
+      <div class="adj-price">R$ 180</div>
+    </div>
+    <div class="adj-item">
+      <div><div class="adj-label">Adaptação de arte existente</div><div class="adj-desc">Redimensionamento ou adaptação para novo formato</div></div>
+      <div class="adj-price">R$ 60</div>
+    </div>
+    <div class="adj-item">
+      <div><div class="adj-label">Urgência (entrega em até 48h)</div><div class="adj-desc">Sujeito à disponibilidade de agenda</div></div>
+      <div class="adj-price">+30%</div>
+    </div>
+  </div>
+
+  <!-- OBSERVAÇÃO -->
+  <div style="background:var(--white);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:var(--radius);padding:22px 28px;margin-bottom:56px;display:flex;align-items:flex-start;gap:16px">
+    <div style="font-size:1.3rem;line-height:1;margin-top:2px">✦</div>
+    <div>
+      <div style="font-size:.78rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">Outros materiais</div>
+      <div style="font-size:.84rem;color:var(--ink-muted);line-height:1.75">
+        Caso haja necessidade de elaboração de material não listado aqui — como livros, livretos, banners, cartazes, grandes formatos, entre outros —
+        entre em contato pelo WhatsApp para solicitação de orçamento específico.
+        <a href="https://wa.me/5561992879263?text=Olá%20Bruna!%20Gostaria%20de%20um%20orçamento%20para%20um%20material%20específico." target="_blank" style="display:inline-block;margin-top:10px;color:var(--amber);font-size:.78rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--amber-light);padding-bottom:1px">Falar no WhatsApp →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERMOS -->
+  <div class="sec-label">
+    <div class="sec-label-num">04</div>
+    <div class="sec-label-text">Como funciona</div>
+    <div class="sec-label-line"></div>
+  </div>
+
+  <div class="terms">
+    <div class="terms-grid">
+      <div>
+        <div class="term-title">Pagamento</div>
+        <div class="term-text">50% no início do projeto e 50% na entrega final aprovada. Itens avulsos pagos integralmente antes do início. Aceito PIX e transferência.</div>
+      </div>
+      <div>
+        <div class="term-title">Prazo médio</div>
+        <div class="term-text">Itens individuais: 3–5 dias úteis. Pacote Essencial: 7 dias. Pacote Profissional: 15 dias. Pacote Completo: 21–28 dias. Prazo conta a partir do briefing aprovado.</div>
+      </div>
+      <div>
+        <div class="term-title">Entrega de arquivos</div>
+        <div class="term-text">Todos os arquivos entregues via Google Drive em pasta organizada. Formatos: AI, PDF, PNG, SVG (logos) e editáveis conforme o item.</div>
+      </div>
+      <div>
+        <div class="term-title">O que é uma rodada de ajuste?</div>
+        <div class="term-text">Uma rodada = um conjunto de alterações enviadas de uma vez. Organize suas observações antes de enviar para aproveitar melhor cada rodada.</div>
+      </div>
+      <div>
+        <div class="term-title">Aprovação e início do prazo</div>
+        <div class="term-text">O cliente envia solicitação por e-mail com os itens escolhidos. O prazo começa a contar a partir do e-mail de confirmação enviado por Bruna Pagy.</div>
+      </div>
+      <div>
+        <div class="term-title">Contato e atendimento</div>
+        <div class="term-text">Atendimento via WhatsApp em horário comercial (seg–sex, 9h–18h). Retorno em até 24h para projetos em andamento.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- STICKY CART -->
+<div id="cart">
+  <div class="cart-inner">
+    <div class="cart-left">
+      <div class="cart-count" id="cart-count">0 itens selecionados</div>
+      <div class="cart-items-preview" id="cart-preview"></div>
+    </div>
+    <div class="cart-right">
+      <div>
+        <div class="cart-total-label">Total estimado</div>
+        <div class="cart-total-value" id="cart-total">R$ 0</div>
+      </div>
+      <div class="cart-actions">
+        <button class="btn-wa" onclick="sendWhatsApp()">Falar no WhatsApp</button>
+      </div>
+      <button class="btn-clear" onclick="clearCart()">Limpar</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">Bruna Pagy</div>
+  <a href="index.html" style="font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--amber-light);text-decoration:none">← Voltar para a home</a>
+  <div>
+    <a href="tel:+5561992879263">(61) 9 9287-9263</a>
+    &nbsp;·&nbsp;
+    <a href="mailto:brunapagy@gmail.com">brunapagy@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+  // DATE
+  const d = new Date();
+  const mo = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  document.getElementById('doc-date').textContent = d.getDate()+' '+mo[d.getMonth()]+'. '+d.getFullYear();
+
+  // STATE
+  let selected = []; // {name, price}
+
+  function formatBRL(n){ return 'R$ '+n.toLocaleString('pt-BR'); }
+
+  // ITEM ROWS
+  document.querySelectorAll('.item-row').forEach(row => {
+    row.addEventListener('click', e => {
+      if(e.target.tagName === 'A') return;
+      const cb = row.querySelector('input[type="checkbox"]');
+      cb.checked = !cb.checked;
+      toggleItem(row, cb.checked);
+    });
+  });
+
+  function toggleItem(row, checked){
+    const name  = row.dataset.name;
+    const price = parseInt(row.dataset.price);
+    row.classList.toggle('selected', checked);
+    if(checked){
+      if(!selected.find(i=>i.name===name)) selected.push({name,price});
+    } else {
+      selected = selected.filter(i=>i.name!==name);
+    }
+    updateCart();
+  }
+
+  function updateCart(){
+    const total = selected.reduce((s,i)=>s+i.price,0);
+    const count = selected.length;
+    const cart  = document.getElementById('cart');
+    document.getElementById('cart-count').textContent = count+' '+(count===1?'item selecionado':'itens selecionados');
+    document.getElementById('cart-preview').textContent = selected.map(i=>i.name).join(' · ');
+    document.getElementById('cart-total').textContent = formatBRL(total);
+    cart.classList.toggle('visible', count > 0);
+  }
+
+  function clearCart(){
+    selected = [];
+    document.querySelectorAll('.item-row').forEach(row=>{
+      row.classList.remove('selected');
+      row.querySelector('input[type="checkbox"]').checked = false;
+    });
+    updateCart();
+  }
+
+  // WHATSAPP
+  function sendWhatsApp(){
+    if(!selected.length) return;
+    const total = selected.reduce((s,i)=>s+i.price,0);
+    const items = selected.map((i,idx)=>(idx+1)+'. '+i.name+' — '+formatBRL(i.price)).join('%0A');
+    const msg = 'Olá Bruna! Gostaria de solicitar um orçamento para os seguintes itens:%0A%0A'+items+'%0A%0A*Total estimado: '+formatBRL(total)+'*%0A%0AAgua rdo seu retorno!';
+    window.open('https://wa.me/5561992879263?text='+msg,'_blank');
+  }
+
+</script>
+</body>
+</html>
