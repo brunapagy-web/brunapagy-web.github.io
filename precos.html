@@ -610,43 +610,41 @@
     closeLeadModal();
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    // Intercepta os botões "Quero este!" dos pacotes
-    document.querySelectorAll('.pkg-cta-wa').forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        _pendingWaUrl = link.getAttribute('href');
-        const decoded = decodeURIComponent(_pendingWaUrl);
-        const match = decoded.match(/Pacote\s+\w+/);
-        document.getElementById('lead-pkg').value = match ? match[0] : 'Pacote';
-        document.getElementById('lead-modal').classList.add('open');
-        document.getElementById('lead-name').focus();
-      });
-    });
-
-    document.getElementById('lead-form').addEventListener('submit', async e => {
+  // Intercepta os botões "Quero este!" dos pacotes
+  document.querySelectorAll('.pkg-cta-wa').forEach(link => {
+    link.addEventListener('click', e => {
       e.preventDefault();
-      const btn = document.getElementById('lead-btn');
-      btn.disabled = true;
-      btn.textContent = 'Enviando…';
-      const name  = document.getElementById('lead-name').value;
-      const email = document.getElementById('lead-email').value;
-      const pkg   = document.getElementById('lead-pkg').value;
-      try {
-        await fetch('https://formspree.io/f/xdabqlzb', {
-          method: 'POST',
-          headers: {'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded'},
-          body: new URLSearchParams({
-            '_subject': 'Interesse em pacote — ' + pkg,
-            'contato-nome': name,
-            'email': email,
-            'pacote-interesse': pkg,
-            'origem': 'tabela-de-precos'
-          }).toString()
-        });
-      } catch(_) {}
-      goWhatsApp();
+      _pendingWaUrl = link.getAttribute('href');
+      const decoded = decodeURIComponent(_pendingWaUrl);
+      const match = decoded.match(/Pacote\s+\w+/);
+      document.getElementById('lead-pkg').value = match ? match[0] : 'Pacote';
+      document.getElementById('lead-modal').classList.add('open');
+      document.getElementById('lead-name').focus();
     });
+  });
+
+  document.getElementById('lead-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('lead-btn');
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+    const name  = document.getElementById('lead-name').value;
+    const email = document.getElementById('lead-email').value;
+    const pkg   = document.getElementById('lead-pkg').value;
+    try {
+      await fetch('https://formspree.io/f/xdabqlzb', {
+        method: 'POST',
+        headers: {'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded'},
+        body: new URLSearchParams({
+          '_subject': 'Interesse em pacote — ' + pkg,
+          'contato-nome': name,
+          'email': email,
+          'pacote-interesse': pkg,
+          'origem': 'tabela-de-precos'
+        }).toString()
+      });
+    } catch(_) {}
+    goWhatsApp();
   });
 
 </script>
