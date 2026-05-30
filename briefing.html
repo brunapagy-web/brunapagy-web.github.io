@@ -13,7 +13,6 @@
     --border:#E0D9CE;--radius:2px;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  a{outline:0;-webkit-tap-highlight-color:transparent}
   html{font-size:16px}
   body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;min-height:100vh}
 
@@ -72,11 +71,9 @@
 
   /* SUBMIT */
   .submit-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;padding:12px 0 0}
-  .btn-submit{background:var(--ink);color:var(--white);font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;border:none;padding:18px 56px;border-radius:var(--radius);cursor:pointer;transition:background .2s,transform .15s;text-decoration:none;display:inline-block}
+  .btn-submit{background:var(--ink);color:var(--white);font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;border:none;padding:18px 56px;border-radius:var(--radius);cursor:pointer;transition:background .2s,transform .15s}
   .btn-submit:hover{background:#2E2D28;transform:translateY(-1px)}
   .btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
-  a.btn-submit{background:#C07D2A}
-  a.btn-submit:hover{background:#A06520}
   .submit-note{font-size:.75rem;color:var(--ink-muted);text-align:center;line-height:1.6}
 
   /* SUCCESS */
@@ -146,6 +143,7 @@
 
 <!-- Formulário fantasma: obrigatório para o Netlify detectar os campos no build -->
 <form name="briefing-identidade-visual" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="contato-nome"><input type="email" name="email"><input type="text" name="contato-whatsapp">
   <input type="text" name="nome-da-marca"><input type="text" name="tempo-negocio">
   <textarea name="o-que-oferece"></textarea><textarea name="significado-nome"></textarea>
   <input type="text" name="preco-medio"><textarea name="diferencial-real"></textarea>
@@ -205,8 +203,32 @@
 <!-- Formulário visual -->
 <form id="briefing-form" action="https://formspree.io/f/xdabqlzb" method="POST">
   <input type="hidden" name="_subject" value="Novo briefing recebido — Bruna Pagy">
-  <input type="hidden" name="_next" value="">
+  <input type="hidden" name="_replyto" id="hidden-replyto">
   <p style="display:none"><input name="_gotcha"></p>
+
+  <!-- 00 — CONTATO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">00</div>
+      <div><div class="section-title">Seus Dados de Contato</div><div class="section-desc">Para eu conseguir te responder</div></div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div class="question">
+          <label for="f-contato-nome">Seu nome *</label>
+          <input id="f-contato-nome" class="field-line" type="text" name="contato-nome" placeholder="Como prefere ser chamado(a)" required>
+        </div>
+        <div class="question">
+          <label for="f-contato-email">Seu e-mail *</label>
+          <input id="f-contato-email" class="field-line" type="email" name="email" placeholder="para@responder.com" required>
+        </div>
+      </div>
+      <div class="question">
+        <label for="f-contato-whatsapp">WhatsApp (opcional)</label>
+        <input id="f-contato-whatsapp" class="field-line" type="text" name="contato-whatsapp" placeholder="(DDD) 9 XXXX-XXXX">
+      </div>
+    </div>
+  </div>
 
   <!-- 01 -->
   <div class="section">
@@ -517,12 +539,12 @@
 </div>
 
   <!-- LINK TABELA DE PREÇOS -->
-  <div style="background:#1C1B18;padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:0;margin-top:0">
+  <div style="background:var(--ink);border-radius:var(--radius);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:0">
     <div>
       <div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px">Bruna Pagy</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.4rem;color:#FFFFFF;line-height:1.2">Quer conhecer os serviços<br>e valores antes de começar?</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.4rem;color:var(--white);line-height:1.2">Quer conhecer os serviços<br>e valores antes de começar?</div>
     </div>
-    <a href="precos.html" target="_blank" class="btn-submit" style="padding:18px 32px">Ver tabela de preços →</a>
+    <a href="precos.html" target="_blank" style="display:inline-block;background:#C07D2A;color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:16px 32px;border-radius:2px;text-decoration:none;white-space:nowrap;border:none">Ver tabela de preços →</a>
   </div>
 
 </main>
@@ -547,6 +569,10 @@
   const err  = document.getElementById('error-msg');
   const suc  = document.getElementById('success-msg');
 
+  document.getElementById('f-contato-email').addEventListener('input', function() {
+    document.getElementById('hidden-replyto').value = this.value;
+  });
+
   form.addEventListener('submit', e => {
     e.preventDefault();
     btn.disabled = true;
@@ -557,7 +583,8 @@
       headers: {'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded'},
       body: new URLSearchParams(new FormData(form)).toString()
     })
-    .then(() => {
+    .then(res => {
+      if (!res.ok) throw new Error('server error');
       form.style.display = 'none';
       suc.style.display  = 'block';
       window.scrollTo({top: suc.offsetTop - 80, behavior: 'smooth'});
