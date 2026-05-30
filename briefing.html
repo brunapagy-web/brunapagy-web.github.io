@@ -201,10 +201,12 @@
 </form>
 
 <!-- Formulário visual -->
-<form id="briefing-form" action="https://formspree.io/f/xdabqlzb" method="POST">
-  <input type="hidden" name="_subject" value="Novo briefing recebido — Bruna Pagy">
-  <input type="hidden" name="_replyto" id="hidden-replyto">
-  <p style="display:none"><input name="_gotcha"></p>
+<form id="briefing-form">
+  <input type="hidden" name="access_key" value="1ebf5f2b-35c4-4c74-b6ad-4df67728f80e">
+  <input type="hidden" name="subject" value="Novo briefing recebido — Bruna Pagy">
+  <input type="hidden" name="replyto" id="hidden-replyto">
+  <input type="hidden" name="from_name" value="Site Bruna Pagy">
+  <p style="display:none"><input name="botcheck"></p>
 
   <!-- 00 — CONTATO -->
   <div class="section">
@@ -578,13 +580,14 @@
     btn.disabled = true;
     btn.textContent = 'Enviando…';
     err.style.display = 'none';
-    fetch('https://formspree.io/f/xdabqlzb', {
+    fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: {'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded'},
       body: new URLSearchParams(new FormData(form)).toString()
     })
-    .then(res => {
-      if (!res.ok) throw new Error('server error');
+    .then(res => res.json())
+    .then(data => {
+      if (!data.success) throw new Error('error');
       form.style.display = 'none';
       suc.style.display  = 'block';
       window.scrollTo({top: suc.offsetTop - 80, behavior: 'smooth'});

@@ -632,11 +632,13 @@
     const email = document.getElementById('lead-email').value;
     const pkg   = document.getElementById('lead-pkg').value;
     try {
-      await fetch('https://formspree.io/f/xdabqlzb', {
+      await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded'},
         body: new URLSearchParams({
-          '_subject': 'Interesse em pacote — ' + pkg,
+          'access_key': '1ebf5f2b-35c4-4c74-b6ad-4df67728f80e',
+          'subject': 'Interesse em pacote — ' + pkg,
+          'from_name': 'Site Bruna Pagy',
           'contato-nome': name,
           'email': email,
           'pacote-interesse': pkg,
