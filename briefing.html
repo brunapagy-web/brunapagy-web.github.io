@@ -82,6 +82,16 @@
   .success-icon::after{content:'';width:22px;height:13px;border-left:3px solid var(--amber);border-bottom:3px solid var(--amber);transform:rotate(-45deg) translateY(-3px);display:block}
   #success-msg h2{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:2rem;margin-bottom:12px}
   #success-msg p{font-size:.9rem;color:var(--ink-muted);max-width:420px;margin:0 auto;line-height:1.8}
+  .success-steps{display:flex;flex-direction:column;gap:12px;max-width:380px;margin:32px auto 0;text-align:left}
+  .success-step{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:var(--amber-faint);border-radius:var(--radius)}
+  .success-step-num{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--amber);line-height:1;flex-shrink:0;min-width:18px}
+  .success-step-text{font-size:.82rem;color:#5C4E30;line-height:1.6}
+  .success-cta{margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .success-cta a{font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:13px 24px;border-radius:var(--radius);text-decoration:none;transition:all .2s}
+  .success-cta .btn-wa{background:#25D366;color:white}
+  .success-cta .btn-wa:hover{background:#1da851}
+  .success-cta .btn-portfolio{background:transparent;color:var(--ink);border:1.5px solid var(--border)}
+  .success-cta .btn-portfolio:hover{border-color:var(--amber);color:var(--amber)}
 
   /* ERROR */
   #error-msg{display:none;background:#FFF5F5;border:1px solid #F5C6C6;border-radius:var(--radius);padding:16px 20px;font-size:.84rem;color:#8B2020;text-align:center;margin-bottom:16px}
@@ -537,7 +547,25 @@
 <div id="success-msg">
   <div class="success-icon"></div>
   <h2>Briefing recebido.</h2>
-  <p>Obrigada por dedicar seu tempo a responder com cuidado. Em breve entrarei em contato para dar início ao projeto.</p>
+  <p>Obrigada por dedicar seu tempo a responder com cuidado. Já tenho tudo que preciso para começar a pensar na sua marca.</p>
+  <div class="success-steps">
+    <div class="success-step">
+      <div class="success-step-num">1</div>
+      <div class="success-step-text"><strong>Vou analisar suas respostas</strong> com calma antes de qualquer contato — isso pode levar até 48h.</div>
+    </div>
+    <div class="success-step">
+      <div class="success-step-num">2</div>
+      <div class="success-step-text"><strong>Entrarei em contato pelo e-mail ou WhatsApp</strong> que você informou para alinharmos os próximos passos.</div>
+    </div>
+    <div class="success-step">
+      <div class="success-step-num">3</div>
+      <div class="success-step-text"><strong>Se tiver dúvidas antes disso</strong>, pode me chamar diretamente no WhatsApp.</div>
+    </div>
+  </div>
+  <div class="success-cta">
+    <a class="btn-wa" href="https://wa.me/5561992879263?text=Olá%20Bruna!%20Acabei%20de%20enviar%20meu%20briefing." target="_blank">Falar no WhatsApp</a>
+    <a class="btn-portfolio" href="portfolio.html">Ver portfólio</a>
+  </div>
 </div>
 
   <!-- LINK TABELA DE PREÇOS -->
