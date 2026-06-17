@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing de Identidade Visual — Bruna Pagy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#F7F4EF;--white:#FFFFFF;--ink:#1C1B18;--ink-muted:#7A756E;
+    --amber:#C07D2A;--amber-light:#E8C98A;--amber-faint:#F5EDD8;
+    --border:#E0D9CE;--radius:2px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:16px}
+  body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;min-height:100vh}
+
+  /* COVER */
+  .cover{background:var(--ink);color:var(--white);padding:80px 64px 72px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-120px;right:-80px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(192,125,42,.22) 0%,transparent 70%);pointer-events:none}
+  .cover-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:72px}
+  .brand-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.5rem;letter-spacing:.18em;text-transform:uppercase}
+  .brand-tagline{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber-light);margin-top:4px}
+  .doc-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--amber-light);border:1px solid rgba(232,201,138,.35);padding:6px 14px;border-radius:var(--radius)}
+  .cover-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(3rem,8vw,5.5rem);line-height:1.05}
+  .cover-title em{font-style:italic;color:var(--amber-light)}
+  .cover-sub{margin-top:28px;font-size:.9rem;color:rgba(255,255,255,.55);max-width:520px;line-height:1.8}
+  .cover-line{margin-top:56px;padding-top:28px;border-top:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:32px;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+  .cover-line span{color:var(--amber-light)}
+
+  /* INTRO */
+  .intro{background:var(--amber-faint);border-left:3px solid var(--amber);margin:48px 48px 0;padding:28px 36px;border-radius:0 var(--radius) var(--radius) 0}
+  .intro p{font-size:.9rem;color:#5C4E30;line-height:1.85}
+  .intro strong{font-weight:500;color:#3D3218}
+
+  /* MAIN */
+  main{padding:48px 48px 80px;max-width:920px;margin:0 auto}
+
+  /* SECTION */
+  .section{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:28px;overflow:hidden}
+  .section-header{display:flex;align-items:center;gap:18px;padding:22px 32px;border-bottom:1px solid var(--border);background:#FDFBF8}
+  .section-number{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;color:var(--amber);line-height:1;min-width:32px}
+  .section-title{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.2rem;letter-spacing:.04em}
+  .section-desc{font-size:.75rem;color:var(--ink-muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+  .section-body{padding:28px 32px;display:flex;flex-direction:column;gap:24px}
+
+  /* QUESTION */
+  .question{display:flex;flex-direction:column;gap:8px}
+  .question label{font-size:.82rem;font-weight:500;letter-spacing:.03em}
+  .hint{font-size:.76rem;color:var(--ink-muted);font-style:italic;line-height:1.6}
+  .field-line{border:none;border-bottom:1.5px solid var(--border);background:transparent;padding:10px 0 8px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:300;color:var(--ink);width:100%;outline:none;transition:border-color .2s}
+  .field-line:focus{border-color:var(--amber)}
+  .field-area{border:1.5px solid var(--border);border-radius:var(--radius);background:#FAFAF8;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:300;color:var(--ink);width:100%;resize:vertical;min-height:88px;outline:none;transition:border-color .2s;line-height:1.7}
+  .field-area:focus{border-color:var(--amber);background:var(--white)}
+  .field-area.tall{min-height:120px}
+
+  /* GRID */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px 32px}
+
+  /* CHECKLIST */
+  .checklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px 16px;margin-top:4px}
+  .check-item{display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius);transition:border-color .15s,background .15s;user-select:none}
+  .check-item input[type="checkbox"]{position:absolute;opacity:0;pointer-events:none;width:0;height:0}
+  .check-box{width:16px;height:16px;border:1.5px solid var(--border);border-radius:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+  .check-item:hover{border-color:var(--amber-light);background:var(--amber-faint)}
+  .check-item:has(input:checked){border-color:var(--amber);background:var(--amber-faint)}
+  .check-item:has(input:checked) .check-box{background:var(--amber);border-color:var(--amber)}
+  .check-item:has(input:checked) .check-box::after{content:'';display:block;width:8px;height:5px;border-left:2px solid white;border-bottom:2px solid white;transform:rotate(-45deg) translateY(-1px)}
+  .check-label{font-size:.8rem;line-height:1.3}
+
+  /* SUBMIT */
+  .submit-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;padding:12px 0 0}
+  .btn-submit{background:var(--ink);color:var(--white);font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;border:none;padding:18px 56px;border-radius:var(--radius);cursor:pointer;transition:background .2s,transform .15s}
+  .btn-submit:hover{background:#2E2D28;transform:translateY(-1px)}
+  .btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .submit-note{font-size:.75rem;color:var(--ink-muted);text-align:center;line-height:1.6}
+
+  /* SUCCESS */
+  #success-msg{display:none;background:var(--white);border:1px solid var(--border);border-top:4px solid var(--amber);border-radius:var(--radius);padding:56px 40px;text-align:center;margin-bottom:28px}
+  .success-icon{width:56px;height:56px;background:var(--amber-faint);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+  .success-icon::after{content:'';width:22px;height:13px;border-left:3px solid var(--amber);border-bottom:3px solid var(--amber);transform:rotate(-45deg) translateY(-3px);display:block}
+  #success-msg h2{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:2rem;margin-bottom:12px}
+  #success-msg p{font-size:.9rem;color:var(--ink-muted);max-width:420px;margin:0 auto;line-height:1.8}
+
+  /* ERROR */
+  #error-msg{display:none;background:#FFF5F5;border:1px solid #F5C6C6;border-radius:var(--radius);padding:16px 20px;font-size:.84rem;color:#8B2020;text-align:center;margin-bottom:16px}
+
+  /* FOOTER */
+  footer{background:var(--ink);color:rgba(255,255,255,.4);padding:36px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase}
+  .footer-brand{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;letter-spacing:.2em;color:var(--white)}
+  footer a{color:var(--amber-light);text-decoration:none}
+  footer a:hover{color:var(--white)}
+
+  /* PRINT */
+  @media print{
+    body{background:white;font-size:13px}
+    .cover{padding:48px 40px 40px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .cover::before{display:none}
+    .cover-title{font-size:3rem}
+    .intro{margin:24px 24px 0}
+    main{padding:24px 24px 40px}
+    .section{break-inside:avoid;margin-bottom:16px}
+    .section-header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .field-line{border-bottom-color:#CCC}
+    .field-area{background:#FAFAFA;border-color:#CCC;min-height:72px}
+    .field-area.tall{min-height:96px}
+    footer{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .btn-submit,.submit-note,#error-msg{display:none!important}
+  }
+
+  @media(max-width:640px){
+    .cover{padding:48px 28px 40px}
+    .cover-top{flex-direction:column;gap:20px}
+    .intro,footer{padding-left:20px;padding-right:20px}
+    .intro{margin-left:20px;margin-right:20px}
+    main{padding:32px 20px 60px}
+    .section-header,.section-body{padding-left:20px;padding-right:20px}
+    .grid-2{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="cover-top">
+    <div>
+      <div class="brand-name">Bruna Pagy</div>
+      <div class="brand-tagline">Design &amp; Identidade Visual</div>
+    </div>
+    <div class="doc-label">Briefing Estratégico</div>
+  </div>
+  <h1 class="cover-title">Identidade<br><em>Visual</em></h1>
+  <p class="cover-sub">Este documento foi desenvolvido para que eu entenda profundamente a sua marca — antes de qualquer decisão visual. Não há respostas certas ou erradas. Quanto mais específico e honesto você for, mais preciso e relevante será o resultado.</p>
+  <div class="cover-line"><span>Confidencial</span> &nbsp;·&nbsp; Uso exclusivo do projeto &nbsp;·&nbsp; <span id="doc-date"></span></div>
+</header>
+
+<div class="intro">
+  <p><strong>Antes de começar:</strong> reserve entre 30 e 45 minutos para preencher com calma. Respostas vagas resultam em direcionamentos genéricos — e uma identidade genérica é invisível no mercado. Evite respostas de uma palavra. Se uma pergunta parecer difícil, é porque ela é importante: tente respondê-la mesmo que de forma imperfeita.</p>
+</div>
+
+<main>
+
+<!-- Formulário fantasma: obrigatório para o Netlify detectar os campos no build -->
+<form name="briefing-identidade-visual" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="nome-da-marca"><input type="text" name="tempo-negocio">
+  <textarea name="o-que-oferece"></textarea><textarea name="significado-nome"></textarea>
+  <input type="text" name="preco-medio"><textarea name="diferencial-real"></textarea>
+  <textarea name="problema-que-resolve"></textarea><textarea name="personalidade-marca"></textarea>
+  <textarea name="o-que-nao-e"></textarea><textarea name="concorrentes"></textarea>
+  <textarea name="concorrentes-diferencial"></textarea><textarea name="cliente-ideal"></textarea>
+  <input type="text" name="faixa-etaria">
+  <input type="checkbox" name="publico-genero" value="Feminino">
+  <input type="checkbox" name="publico-genero" value="Masculino">
+  <input type="checkbox" name="publico-genero" value="Misto">
+  <input type="checkbox" name="cliente-valoriza" value="Preço acessível">
+  <input type="checkbox" name="cliente-valoriza" value="Qualidade">
+  <input type="checkbox" name="cliente-valoriza" value="Praticidade">
+  <input type="checkbox" name="cliente-valoriza" value="Exclusividade">
+  <input type="checkbox" name="cliente-valoriza" value="Atendimento próximo">
+  <input type="checkbox" name="cliente-valoriza" value="Confiança">
+  <input type="checkbox" name="cliente-valoriza" value="Pertencimento">
+  <input type="checkbox" name="cliente-valoriza" value="Resultado rápido">
+  <textarea name="medo-aspiracao"></textarea>
+  <input type="text" name="promessa-central"><textarea name="sentimento-desejado"></textarea>
+  <input type="checkbox" name="tom-comunicacao" value="Formal">
+  <input type="checkbox" name="tom-comunicacao" value="Informal">
+  <input type="checkbox" name="tom-comunicacao" value="Técnica">
+  <input type="checkbox" name="tom-comunicacao" value="Próxima / humana">
+  <input type="checkbox" name="tom-comunicacao" value="Inspiracional">
+  <input type="checkbox" name="tom-comunicacao" value="Direta e objetiva">
+  <input type="text" name="palavras-da-marca">
+  <input type="checkbox" name="tem-identidade-visual" value="Sim, possuo">
+  <input type="checkbox" name="tem-identidade-visual" value="Não, ainda não tenho">
+  <textarea name="gosta-nao-gosta-iv"></textarea>
+  <input type="checkbox" name="estilo-visual" value="Minimalista"><input type="checkbox" name="estilo-visual" value="Moderna">
+  <input type="checkbox" name="estilo-visual" value="Clássica"><input type="checkbox" name="estilo-visual" value="Elegante">
+  <input type="checkbox" name="estilo-visual" value="Criativa"><input type="checkbox" name="estilo-visual" value="Divertida">
+  <input type="checkbox" name="estilo-visual" value="Rústica / artesanal"><input type="checkbox" name="estilo-visual" value="Sofisticada">
+  <input type="checkbox" name="estilo-visual" value="Discreta"><input type="checkbox" name="estilo-visual" value="Chamativa / bold">
+  <input type="checkbox" name="estilo-visual" value="Editorial"><input type="checkbox" name="estilo-visual" value="Orgânica / natural">
+  <input type="checkbox" name="paleta-preferencia" value="Clara / leve">
+  <input type="checkbox" name="paleta-preferencia" value="Escura / intensa">
+  <input type="checkbox" name="paleta-preferencia" value="Terrosa / quente">
+  <input type="checkbox" name="paleta-preferencia" value="Vibrante">
+  <input type="text" name="cor-desejada">
+  <textarea name="marcas-que-admira"></textarea><textarea name="marcas-que-rejeita"></textarea>
+  <textarea name="simbolos-elementos"></textarea>
+  <input type="checkbox" name="materiais" value="Logotipo principal"><input type="checkbox" name="materiais" value="Variações do logo">
+  <input type="checkbox" name="materiais" value="Cartão de visita"><input type="checkbox" name="materiais" value="Papel timbrado">
+  <input type="checkbox" name="materiais" value="Assinatura de e-mail"><input type="checkbox" name="materiais" value="Foto de perfil (redes)">
+  <input type="checkbox" name="materiais" value="Destaques Instagram"><input type="checkbox" name="materiais" value="Templates de post">
+  <input type="checkbox" name="materiais" value="Templates de stories"><input type="checkbox" name="materiais" value="Capa para redes sociais">
+  <input type="checkbox" name="materiais" value="Slides / apresentação"><input type="checkbox" name="materiais" value="Proposta comercial">
+  <input type="checkbox" name="materiais" value="Artes para WhatsApp"><input type="checkbox" name="materiais" value="Catálogo digital">
+  <input type="checkbox" name="materiais" value="Manual de identidade">
+  <input type="text" name="prazo"><input type="text" name="visao-1-ano">
+  <textarea name="objetivo-identidade"></textarea><textarea name="informacoes-adicionais"></textarea>
+  <button type="submit">Enviar</button>
+</form>
+
+<!-- Formulário visual -->
+<form id="briefing-form" action="https://formspree.io/f/xdabqlzb" method="POST">
+  <input type="hidden" name="_subject" value="Novo briefing recebido — Bruna Pagy">
+  <input type="hidden" name="_next" value="">
+  <p style="display:none"><input name="_gotcha"></p>
+
+  <!-- 01 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div><div class="section-title">Sobre o Negócio</div><div class="section-desc">Contexto e história da marca</div></div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div class="question">
+          <label for="f-nome">Nome da marca *</label>
+          <input id="f-nome" class="field-line" type="text" name="nome-da-marca" placeholder="Como sua marca se chama" required>
+        </div>
+        <div class="question">
+          <label for="f-tempo">Há quanto tempo o negócio existe?</label>
+          <input id="f-tempo" class="field-line" type="text" name="tempo-negocio" placeholder="Ex: 6 meses, 3 anos, ainda vai lançar">
+        </div>
+      </div>
+      <div class="question">
+        <label for="f-oferece">O que você vende ou oferece? *</label>
+        <span class="hint">Seja específico: produto, serviço, para quem. Evite definições amplas como "soluções".</span>
+        <textarea id="f-oferece" class="field-area" name="o-que-oferece" placeholder="Descreva o que sua marca entrega, de forma concreta." required></textarea>
+      </div>
+      <div class="question">
+        <label for="f-significado">Existe algum significado ou história por trás do nome?</label>
+        <span class="hint">Se não houver, tudo bem — mas se houver, isso pode virar ativo de comunicação.</span>
+        <textarea id="f-significado" class="field-area" name="significado-nome" placeholder="Origem do nome, significado, motivação..."></textarea>
+      </div>
+      <div class="question">
+        <label for="f-preco">Qual é o preço médio do seu produto ou serviço principal?</label>
+        <span class="hint">Fundamental para calibrar o nível de sofisticação visual corretamente.</span>
+        <input id="f-preco" class="field-line" type="text" name="preco-medio" placeholder="Ex: R$150/mês, R$800 por projeto, R$90 o produto">
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <div><div class="section-title">Essência da Marca</div><div class="section-desc">O que te faz diferente — de verdade</div></div>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <label for="f-diferencial">O que sua marca faz que nenhuma outra faz exatamente igual? *</label>
+        <span class="hint">Não vale "atendimento personalizado" ou "qualidade" — isso todo concorrente afirma. Pense no que é genuinamente seu.</span>
+        <textarea id="f-diferencial" class="field-area tall" name="diferencial-real" placeholder="Seja específico. O que concretamente você faz diferente?" required></textarea>
+      </div>
+      <div class="question">
+        <label for="f-problema">Qual problema real você resolve para seu cliente? *</label>
+        <span class="hint">Não o produto em si — o problema de fundo. Ex: não "aulas de inglês", mas "o cliente não consegue progredir com métodos convencionais".</span>
+        <textarea id="f-problema" class="field-area" name="problema-que-resolve" placeholder="Qual dor, frustração ou necessidade concreta você elimina?" required></textarea>
+      </div>
+      <div class="question">
+        <label for="f-pessoa">Se sua marca fosse uma pessoa, como ela seria?</label>
+        <span class="hint">Pense em personalidade, jeito de falar, como ela age numa situação difícil.</span>
+        <textarea id="f-pessoa" class="field-area" name="personalidade-marca" placeholder="Ex: direta, acolhedora sem ser paternalista, fala com clareza sem encher de jargão..."></textarea>
+      </div>
+      <div class="question">
+        <label for="f-naoe">O que sua marca definitivamente NÃO é? O que ela recusa ser?</label>
+        <span class="hint">Delimitar o que você rejeita define tão bem quanto o que você afirma.</span>
+        <textarea id="f-naoe" class="field-area" name="o-que-nao-e" placeholder="Ex: não é fria, não é genérica, não é para quem quer só preço baixo..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <div><div class="section-title">Mercado e Concorrência</div><div class="section-desc">O cenário em que sua marca vai aparecer</div></div>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <label for="f-concorrentes">Quem são seus 3 principais concorrentes? *</label>
+        <span class="hint">Nome, perfil ou arroba do Instagram. Sem concorrentes identificados, não é possível criar diferenciação real.</span>
+        <textarea id="f-concorrentes" class="field-area" name="concorrentes" placeholder="1.&#10;2.&#10;3." required></textarea>
+      </div>
+      <div class="question">
+        <label for="f-diferente">O que eles fazem bem? O que você faria diferente?</label>
+        <textarea id="f-diferente" class="field-area" name="concorrentes-diferencial" placeholder="O que admira neles e onde você enxerga o gap que sua marca pode ocupar."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <div><div class="section-title">Público-Alvo</div><div class="section-desc">Quem você quer que te encontre</div></div>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <label for="f-cliente">Descreva seu cliente ideal em um parágrafo *</label>
+        <span class="hint">Comportamento, rotina, estilo de vida — não apenas idade e renda. Quanto mais vivo, melhor.</span>
+        <textarea id="f-cliente" class="field-area tall" name="cliente-ideal" placeholder="Ex: mulher de 35 anos, trabalha em empresa, já tentou aprender inglês e desistiu, tem agenda apertada..." required></textarea>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label>Seu público é majoritariamente:</label>
+          <div class="checklist" style="grid-template-columns:1fr 1fr 1fr">
+            <label class="check-item"><input type="checkbox" name="publico-genero" value="Feminino"><span class="check-box"></span><span class="check-label">Feminino</span></label>
+            <label class="check-item"><input type="checkbox" name="publico-genero" value="Masculino"><span class="check-box"></span><span class="check-label">Masculino</span></label>
+            <label class="check-item"><input type="checkbox" name="publico-genero" value="Misto"><span class="check-box"></span><span class="check-label">Misto</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <label for="f-faixa">Faixa etária predominante:</label>
+          <input id="f-faixa" class="field-line" type="text" name="faixa-etaria" placeholder="Ex: 28–45 anos">
+        </div>
+      </div>
+      <div class="question">
+        <label>O que seu cliente mais valoriza?</label>
+        <div class="checklist">
+          <label class="check-item"><input type="checkbox" name="cliente-valoriza" value="Preço acessível"><span class="check-box"></span><span class="check-label">Preço acessível</span></label>
+          <label class="check-item"><input type="checkbox" name="cliente-valoriza" value="Qualidade"><span class="check-box"></span><span class="check-label">Qualidade</span></label>
+          <label class="check-item"><input type="checkbox" name="cliente-valoriza" value="Praticidade"><span class="check-box"></span><span class="check-label">Praticidade</span></label>
+          <label class="check-item"><input type="checkbox" name="cliente-valoriza" value="Exclusividade"><span class="check-box"></span><span class="check-label">Exclusividade</span></label>
+          <label class="check-item"><input type="checkbox" name="cliente-valoriza" value="Atendimento próximo"><span class="check-box"></span><span class="check-label">Atendimento próximo</span></label>
+          <label class="check-item"><input type="checkbox" name="cliente-valoriza" value="Confiança"><span class="check-box"></span><span class="check-label">Confiança</span></label>
+          <label class="check-item"><input type="checkbox" name="cliente-valoriza" value="Pertencimento"><span class="check-box"></span><span class="check-label">Pertencimento</span></label>
+          <label class="check-item"><input type="checkbox" name="cliente-valoriza" value="Resultado rápido"><span class="check-box"></span><span class="check-label">Resultado rápido</span></label>
+        </div>
+      </div>
+      <div class="question">
+        <label for="f-medo">O que seu cliente teme? O que ele aspira?</label>
+        <span class="hint">O medo e a aspiração do cliente são os dois maiores guias para a comunicação de marca.</span>
+        <textarea id="f-medo" class="field-area" name="medo-aspiracao" placeholder="Medo: ...&#10;Aspiração: ..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">05</div>
+      <div><div class="section-title">Posicionamento e Mensagem</div><div class="section-desc">O que você quer comunicar — e como</div></div>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <label for="f-promessa">Qual é a promessa central da sua marca em uma frase? *</label>
+        <span class="hint">Se sua marca pudesse dizer apenas uma coisa para o cliente, o que seria?</span>
+        <input id="f-promessa" class="field-line" type="text" name="promessa-central" placeholder="Uma frase direta, específica e honesta." required>
+      </div>
+      <div class="question">
+        <label for="f-sentimento">Como você quer que seu cliente se sinta ao ver sua marca?</label>
+        <span class="hint">Sensação, emoção, percepção — não apenas "impressionado".</span>
+        <textarea id="f-sentimento" class="field-area" name="sentimento-desejado" placeholder="Ex: seguro de que está no lugar certo, aliviado porque alguém finalmente entende o que ele precisa..."></textarea>
+      </div>
+      <div class="question">
+        <label>Como sua marca se comunica com o cliente?</label>
+        <div class="checklist">
+          <label class="check-item"><input type="checkbox" name="tom-comunicacao" value="Formal"><span class="check-box"></span><span class="check-label">Formal</span></label>
+          <label class="check-item"><input type="checkbox" name="tom-comunicacao" value="Informal"><span class="check-box"></span><span class="check-label">Informal</span></label>
+          <label class="check-item"><input type="checkbox" name="tom-comunicacao" value="Técnica"><span class="check-box"></span><span class="check-label">Técnica</span></label>
+          <label class="check-item"><input type="checkbox" name="tom-comunicacao" value="Próxima / humana"><span class="check-box"></span><span class="check-label">Próxima / humana</span></label>
+          <label class="check-item"><input type="checkbox" name="tom-comunicacao" value="Inspiracional"><span class="check-box"></span><span class="check-label">Inspiracional</span></label>
+          <label class="check-item"><input type="checkbox" name="tom-comunicacao" value="Direta e objetiva"><span class="check-box"></span><span class="check-label">Direta e objetiva</span></label>
+        </div>
+      </div>
+      <div class="question">
+        <label for="f-palavras">Liste de 3 a 5 palavras que representam sua marca *</label>
+        <input id="f-palavras" class="field-line" type="text" name="palavras-da-marca" placeholder="Ex: força, adaptação, pertencimento, clareza, autenticidade" required>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">06</div>
+      <div><div class="section-title">Identidade Visual Atual</div><div class="section-desc">O que já existe — e o que precisa mudar</div></div>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <label>Você já possui logotipo ou identidade visual?</label>
+        <div class="checklist" style="grid-template-columns:1fr 1fr">
+          <label class="check-item"><input type="checkbox" name="tem-identidade-visual" value="Sim, possuo"><span class="check-box"></span><span class="check-label">Sim, possuo</span></label>
+          <label class="check-item"><input type="checkbox" name="tem-identidade-visual" value="Não, ainda não tenho"><span class="check-box"></span><span class="check-label">Não, ainda não tenho</span></label>
+        </div>
+      </div>
+      <div class="question">
+        <label for="f-iv">Se sim — o que você gosta e o que não gosta na identidade atual?</label>
+        <span class="hint">Cor, tipografia, símbolo, sensação geral. Isso evita repetir erros.</span>
+        <textarea id="f-iv" class="field-area" name="gosta-nao-gosta-iv" placeholder="Gosto de: ...&#10;Não gosto de: ..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">07</div>
+      <div><div class="section-title">Direção Estética</div><div class="section-desc">Referências visuais e preferências</div></div>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <label>Qual estilo visual mais combina com sua marca? *</label>
+        <div class="checklist">
+          <label class="check-item"><input type="checkbox" name="estilo-visual" value="Minimalista"><span class="check-box"></span><span class="check-label">Minimalista</span></label>
+          <label class="check-item"><input type="checkbox" name="estilo-visual" value="Moderna"><span class="check-box"></span><span class="check-label">Moderna</span></label>
+          <label class="check-item"><input type="checkbox" name="estilo-visual" value="Clássica"><span class="check-box"></span><span class="check-label">Clássica</span></label>
+          <label class="check-item"><input type="checkbox" name="estilo-visual" value="Elegante"><span class="check-box"></span><span class="check-label">Elegante</span></label>
+          <label class="check-item"><input type="checkbox" name="estilo-visual" value="Criativa"><span class="check-box"></span><span class="check-label">Criativa</span></label>
+          <label class="check-item"><input type="checkbox" name="estilo-visual" value="Divertida"><span class="check-box"></span><span class="check-label">Divertida</span></label>
+          <label class="check-item"><input type="checkbox" name="estilo-visual" value="Rústica / artesanal"><span class="check-box"></span><span class="check-label">Rústica / artesanal</span></label>
+          <label class="check-item"><input type="checkbox" name="estilo-visual" value="Sofisticada"><span class="check-box"></span><span class="check-label">Sofisticada</span></label>
+          <label class="check-item"><input type="checkbox" name="estilo-visual" value="Discreta"><span class="check-box"></span><span class="check-label">Discreta</span></label>
+          <label class="check-item"><input type="checkbox" name="estilo-visual" value="Chamativa / bold"><span class="check-box"></span><span class="check-label">Chamativa / bold</span></label>
+          <label class="check-item"><input type="checkbox" name="estilo-visual" value="Editorial"><span class="check-box"></span><span class="check-label">Editorial</span></label>
+          <label class="check-item"><input type="checkbox" name="estilo-visual" value="Orgânica / natural"><span class="check-box"></span><span class="check-label">Orgânica / natural</span></label>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label>Sua marca deve ser mais:</label>
+          <div class="checklist" style="grid-template-columns:1fr 1fr">
+            <label class="check-item"><input type="checkbox" name="paleta-preferencia" value="Clara / leve"><span class="check-box"></span><span class="check-label">Clara / leve</span></label>
+            <label class="check-item"><input type="checkbox" name="paleta-preferencia" value="Escura / intensa"><span class="check-box"></span><span class="check-label">Escura / intensa</span></label>
+            <label class="check-item"><input type="checkbox" name="paleta-preferencia" value="Terrosa / quente"><span class="check-box"></span><span class="check-label">Terrosa / quente</span></label>
+            <label class="check-item"><input type="checkbox" name="paleta-preferencia" value="Vibrante"><span class="check-box"></span><span class="check-label">Vibrante</span></label>
+          </div>
+        </div>
+        <div class="question">
+          <label for="f-cor">Existe alguma cor que gostaria de usar?</label>
+          <input id="f-cor" class="field-line" type="text" name="cor-desejada" placeholder="Cor, tom ou referência. Não precisa ser HEX.">
+        </div>
+      </div>
+      <div class="question">
+        <label for="f-admira">Cite marcas que você admira visualmente *</label>
+        <span class="hint">De qualquer setor. Diga por que admira cada uma — o "por quê" é mais valioso que o nome.</span>
+        <textarea id="f-admira" class="field-area tall" name="marcas-que-admira" placeholder="Marca 1: ... — por quê: ...&#10;Marca 2: ... — por quê: ...&#10;Marca 3: ... — por quê: ..." required></textarea>
+      </div>
+      <div class="question">
+        <label for="f-rejeita">Cite marcas que você definitivamente NÃO quer parecer *</label>
+        <span class="hint">Rejeição bem definida é tão valiosa quanto referência positiva.</span>
+        <textarea id="f-rejeita" class="field-area" name="marcas-que-rejeita" placeholder="Marca: ... — por quê não: ..." required></textarea>
+      </div>
+      <div class="question">
+        <label for="f-simbolos">Existe algum símbolo ou elemento que gostaria de explorar ou evitar?</label>
+        <textarea id="f-simbolos" class="field-area" name="simbolos-elementos" placeholder="Ícones, formas, elementos visuais com ou sem significado para você ou seu público."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">08</div>
+      <div><div class="section-title">Materiais e Entregáveis</div><div class="section-desc">O que você precisa e para onde vai</div></div>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <label>Quais materiais você precisa?</label>
+        <div class="checklist">
+          <label class="check-item"><input type="checkbox" name="materiais" value="Logotipo principal"><span class="check-box"></span><span class="check-label">Logotipo principal</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Variações do logo"><span class="check-box"></span><span class="check-label">Variações do logo</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Cartão de visita"><span class="check-box"></span><span class="check-label">Cartão de visita</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Papel timbrado"><span class="check-box"></span><span class="check-label">Papel timbrado</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Assinatura de e-mail"><span class="check-box"></span><span class="check-label">Assinatura de e-mail</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Foto de perfil (redes)"><span class="check-box"></span><span class="check-label">Foto de perfil (redes)</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Destaques Instagram"><span class="check-box"></span><span class="check-label">Destaques Instagram</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Templates de post"><span class="check-box"></span><span class="check-label">Templates de post</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Templates de stories"><span class="check-box"></span><span class="check-label">Templates de stories</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Capa para redes sociais"><span class="check-box"></span><span class="check-label">Capa para redes sociais</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Slides / apresentação"><span class="check-box"></span><span class="check-label">Slides / apresentação</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Proposta comercial"><span class="check-box"></span><span class="check-label">Proposta comercial</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Artes para WhatsApp"><span class="check-box"></span><span class="check-label">Artes para WhatsApp</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Catálogo digital"><span class="check-box"></span><span class="check-label">Catálogo digital</span></label>
+          <label class="check-item"><input type="checkbox" name="materiais" value="Manual de identidade"><span class="check-box"></span><span class="check-label">Manual de identidade</span></label>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="question">
+          <label for="f-prazo">Prazo desejado para entrega:</label>
+          <input id="f-prazo" class="field-line" type="text" name="prazo" placeholder="Ex: 3 semanas, sem pressa, urgente">
+        </div>
+        <div class="question">
+          <label for="f-visao">Como você imagina sua marca daqui a 1 ano?</label>
+          <input id="f-visao" class="field-line" type="text" name="visao-1-ano" placeholder="Objetivo, alcance, posicionamento desejado">
+        </div>
+      </div>
+      <div class="question">
+        <label for="f-objetivo">Existe algum objetivo importante que essa identidade precisa ajudar a alcançar?</label>
+        <span class="hint">Não apenas "ficar bonito" — qual resultado de negócio você espera que a identidade visual apoie?</span>
+        <textarea id="f-objetivo" class="field-area" name="objetivo-identidade" placeholder="Ex: dar mais credibilidade, atrair clientes de maior ticket, lançar nas redes sociais..."></textarea>
+      </div>
+      <div class="question">
+        <label for="f-adicional">Existe alguma informação importante que você queira compartilhar?</label>
+        <textarea id="f-adicional" class="field-area" name="informacoes-adicionais" placeholder="Qualquer contexto adicional que considere relevante para o projeto."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div id="error-msg">Ocorreu um erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.</div>
+
+  <div class="submit-wrap">
+    <button class="btn-submit" type="submit" id="btn-submit">Enviar briefing</button>
+    <p class="submit-note">Ao enviar, suas respostas chegam diretamente para Bruna Pagy.<br>Você receberá um retorno em até 48h.</p>
+  </div>
+
+</form>
+
+<div id="success-msg">
+  <div class="success-icon"></div>
+  <h2>Briefing recebido.</h2>
+  <p>Obrigada por dedicar seu tempo a responder com cuidado. Em breve entrarei em contato para dar início ao projeto.</p>
+</div>
+
+  <!-- LINK TABELA DE PREÇOS -->
+  <div style="background:var(--ink);border-radius:var(--radius);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:0">
+    <div>
+      <div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px">Bruna Pagy</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.4rem;color:var(--white);line-height:1.2">Quer conhecer os serviços<br>e valores antes de começar?</div>
+    </div>
+    <a href="https://brunapagy-precos.netlify.app/" target="_blank" style="display:inline-block;background:var(--amber);color:var(--white);font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:16px 32px;border-radius:var(--radius);text-decoration:none;white-space:nowrap;transition:background .2s">Ver tabela de preços →</a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-brand">Bruna Pagy</div>
+  <div>Design &amp; Identidade Visual &nbsp;·&nbsp; Brasília, DF</div>
+  <div>
+    <a href="tel:+5561992879263">(61) 9 9287-9263</a>
+    &nbsp;·&nbsp;
+    <a href="mailto:brunapagy@gmail.com">brunapagy@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+  // ── DATA ──
+  const d = new Date();
+  const m = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  document.getElementById('doc-date').textContent = d.getDate()+' '+m[d.getMonth()]+'. '+d.getFullYear();
+
+  const SAVE_KEY = 'briefing_bruna_rascunho';
+  const form = document.getElementById('briefing-form');
+  const btn  = document.getElementById('btn-submit');
+  const err  = document.getElementById('error-msg');
+  const suc  = document.getElementById('success-msg');
+
+  // ── SALVAR ──
+  function salvar() {
+    const dados = {};
+    // Campos de texto
+    form.querySelectorAll('input[type="text"], input[type="email"], textarea').forEach(el => {
+      if (el.name && el.name !== 'bot-field') dados[el.id || el.name] = el.value;
+    });
+    // Checkboxes
+    form.querySelectorAll('input[type="checkbox"]').forEach(el => {
+      if (!el.name) return;
+      const key = el.name + '::' + el.value;
+      dados[key] = el.checked;
+    });
+    localStorage.setItem(SAVE_KEY, JSON.stringify(dados));
+  }
+
+  // ── RESTAURAR ──
+  function restaurar() {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return;
+    try {
+      const dados = JSON.parse(raw);
+      // Campos de texto
+      form.querySelectorAll('input[type="text"], input[type="email"], textarea').forEach(el => {
+        const key = el.id || el.name;
+        if (key && dados[key] !== undefined) el.value = dados[key];
+      });
+      // Checkboxes
+      form.querySelectorAll('input[type="checkbox"]').forEach(el => {
+        if (!el.name) return;
+        const key = el.name + '::' + el.value;
+        if (dados[key]) el.checked = true;
+      });
+      // Mostrar aviso
+      mostrarAviso();
+    } catch(e) {}
+  }
+
+  // ── AVISO DE RASCUNHO ──
+  function mostrarAviso() {
+    if (document.getElementById('aviso-rascunho')) return;
+    const aviso = document.createElement('div');
+    aviso.id = 'aviso-rascunho';
+    aviso.style.cssText = 'background:#F5EDD8;border-left:3px solid #C07D2A;padding:14px 20px;margin:0 48px 24px;font-size:.82rem;color:#5C4E30;display:flex;align-items:center;justify-content:space-between;gap:16px;border-radius:0 2px 2px 0';
+    aviso.innerHTML = '<span>📋 Suas respostas anteriores foram restauradas.</span><button onclick="limparRascunho()" style="background:none;border:none;color:#C07D2A;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:\'DM Sans\',sans-serif">Limpar</button>';
+    const intro = document.querySelector('.intro');
+    if (intro) intro.after(aviso);
+  }
+
+  function limparRascunho() {
+    localStorage.removeItem(SAVE_KEY);
+    const aviso = document.getElementById('aviso-rascunho');
+    if (aviso) aviso.remove();
+    form.querySelectorAll('input[type="text"], textarea').forEach(el => el.value = '');
+    form.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+  }
+
+  // ── AUTOSAVE a cada interação ──
+  form.addEventListener('input', salvar);
+  form.addEventListener('change', salvar);
+
+  // ── RESTAURAR ao carregar ──
+  restaurar();
+
+  // ── ENVIO ──
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+    err.style.display = 'none';
+    fetch('https://formspree.io/f/xdabqlzb', {
+      method: 'POST',
+      headers: {'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded'},
+      body: new URLSearchParams(new FormData(form)).toString()
+    })
+    .then(() => {
+      localStorage.removeItem(SAVE_KEY); // limpa rascunho após envio
+      form.style.display = 'none';
+      suc.style.display  = 'block';
+      window.scrollTo({top: suc.offsetTop - 80, behavior: 'smooth'});
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.textContent = 'Enviar briefing';
+      err.style.display = 'block';
+    });
+  });
+</script>
+</body>
+</html>
